@@ -1,10 +1,34 @@
 package restaurant;
 
-public final class Drink extends MenuItem
+import java.io.StringReader;
+enum DrinkTypeEnum{
+    BEER,
+    WINE,
+    VODKA,
+    BRANDY,
+    CHAMPAGNE,
+    WHISKEY,
+    TEQUILA,
+    RUM,
+    VERMUTH,
+    LIQUOR,
+    JAGERMEISTER,
+    JUICE,
+    COFFEE,
+    GREEN_TEA,
+    BLACK_TEA,
+    MILK,
+    WATER,
+    SODA
+}
+
+public final class Drink extends MenuItem implements Alcoholable
 {
 //    private float price;
 //    private String name;
 //    private String description;
+    private double alcoholVol;
+    private DrinkTypeEnum type;
 
     Drink(String name, String description)
     {
@@ -24,6 +48,23 @@ public final class Drink extends MenuItem
         this.cost=price;
         this.name=name;
         this.description=description;
+    }
+
+    public DrinkTypeEnum getType(){
+        return type;
+    }
+
+    @Override
+    public boolean isAlcoholicDrink() {
+        if(alcoholVol==0.0){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public double getAlcoholVol() {
+        return alcoholVol;
     }
 
 //    public String getDescription() {
