@@ -2,9 +2,9 @@ package restaurant;
 
 public class MenuItem {
 
-    private int cost;
-    private String name;
-    private String description;
+    protected int cost;
+    protected String name;
+    protected String description;
 
     public String getDescription() {
         return description;

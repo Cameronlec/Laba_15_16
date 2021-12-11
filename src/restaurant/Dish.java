@@ -1,10 +1,10 @@
 package restaurant;
 
-public final class Dish implements Item
+public final class Dish extends MenuItem
 {
-    private double cost;
-    private String name;
-    private String description;
+//    private int cost;
+//    private String name;
+//    private String description;
 
     Dish(String name, String description)
     {
@@ -16,7 +16,7 @@ public final class Dish implements Item
         this.description=description;
     }
 
-    Dish(float price, String name, String description)
+    Dish(int price, String name, String description)
     {
         if (price<0 || name==null||name.equals("")||description==null||description.equals("")){
             throw new IllegalArgumentException("Неверные данные для нового блюда");
@@ -26,15 +26,15 @@ public final class Dish implements Item
         this.description=description;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public double getCost() {
-        return cost;
-    }
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public int getCost() {
+//        return cost;
+//    }
 }
