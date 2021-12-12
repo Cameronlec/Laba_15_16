@@ -1,6 +1,5 @@
 package restaurant;
 
-import java.io.StringReader;
 enum DrinkTypeEnum{
     BEER,
     WINE,
