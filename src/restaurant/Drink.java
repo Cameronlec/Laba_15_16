@@ -30,6 +30,14 @@ public final class Drink extends MenuItem implements Alcoholable
     private double alcoholVol;
     private DrinkTypeEnum type;
 
+    Drink(String name, String description, int cost, double alcoholVol, DrinkTypeEnum type){
+        this.name=name;
+        this.description=description;
+        this.cost=cost;
+        this.alcoholVol=alcoholVol;
+        this.type=type;
+    }
+
     Drink(String name, String description)
     {
         if (name==null||name.equals("")||description==null||description.equals("")){
@@ -56,10 +64,7 @@ public final class Drink extends MenuItem implements Alcoholable
 
     @Override
     public boolean isAlcoholicDrink() {
-        if(alcoholVol==0.0){
-            return false;
-        }
-        return true;
+        return alcoholVol != 0.0;
     }
 
     @Override
@@ -67,15 +72,4 @@ public final class Drink extends MenuItem implements Alcoholable
         return alcoholVol;
     }
 
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public int getCost() {
-//        return price;
-//    }
 }
