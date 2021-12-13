@@ -1,7 +1,21 @@
 package restaurant;
 
+import java.beans.PropertyEditorManager;
+
 public class InternetOrdersManager implements OrdersManager
 {
+    public boolean add(Order order){
+
+        return true;
+    }
+    public Order remove(){
+
+        return new InternetOrder();
+    }
+
+    public Order order(){
+        return new InternetOrder();
+    }
 
     @Override
     public int itemsQuantity(String itemName) {

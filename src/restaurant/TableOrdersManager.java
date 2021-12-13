@@ -4,9 +4,10 @@ import java.util.HashMap;
 
 public class TableOrdersManager implements OrdersManager
 {
-    //private Integer tableNumber;
+    int tablesQuantity=15;
     private HashMap<Integer, Order> restaurantOrders;
     private HashMap<String, Order> internetOrders;
+    Order[] orders;
 
     TableOrdersManager()
     {
@@ -29,7 +30,9 @@ public class TableOrdersManager implements OrdersManager
         }
         internetOrders.put(address, order);
     }
-
+    int getTablesQuantity(){
+        return tablesQuantity;
+    }
     public Order getOrder(String address){
         return internetOrders.get(address);
     }
