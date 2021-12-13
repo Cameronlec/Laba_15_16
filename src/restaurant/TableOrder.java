@@ -1,8 +1,6 @@
 package restaurant;
 
-
-
-public class RestaurantOrder implements Order
+public class TableOrder implements Order
 {
     private Integer orderNumber;
     private Integer tableNumber;
@@ -13,7 +11,7 @@ public class RestaurantOrder implements Order
 
     private MenuItem[] orderItemsArray;
 
-    RestaurantOrder(Integer orderNumber, Integer tableNumber)
+    TableOrder(Integer orderNumber, Integer tableNumber)
     {
         this.orderNumber = orderNumber;
         this.tableNumber = tableNumber;
@@ -23,7 +21,7 @@ public class RestaurantOrder implements Order
         size = 0;
     }
 
-    RestaurantOrder(Integer orderNumber, Integer tableNumber, MenuItem[] items)
+    TableOrder(Integer orderNumber, Integer tableNumber, MenuItem[] items)
     {
         this.orderNumber = orderNumber;
         this.tableNumber = tableNumber;
@@ -173,7 +171,7 @@ public class RestaurantOrder implements Order
         tmpNames[0]=orderItemsArray[0].getName();
         int uniqNamesCount=1;
         for(int i=0; i<size; i++) {
-            String currentItemName=orderItemsArray[i].getName();
+            String currentItemName = orderItemsArray[i].getName();
             boolean isPresent=false;
             for(int j=0; j<uniqNamesCount; j++){
                 if(currentItemName.equals(tmpNames[j])){

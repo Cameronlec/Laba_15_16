@@ -2,13 +2,13 @@ package restaurant;
 
 import java.util.HashMap;
 
-public class OrderManager
+public class TableOrdersManager implements OrdersManager
 {
     //private Integer tableNumber;
     private HashMap<Integer, Order> restaurantOrders;
     private HashMap<String, Order> internetOrders;
 
-    OrderManager()
+    TableOrdersManager()
     {
 //        this.tableNumber=tableNumber;
         restaurantOrders = new HashMap<Integer, Order>();
@@ -89,4 +89,28 @@ public class OrderManager
         return  count;
     }
 
+    @Override
+    public int itemsQuantity(String itemName) {
+        return 0;
+    }
+
+    @Override
+    public int itemsQuantity(MenuItem item) {
+        return 0;
+    }
+
+    @Override
+    public Order[] getOrders() {
+        return new Order[0];
+    }
+
+    @Override
+    public int ordersCostSummary() {
+        return 0;
+    }
+
+    @Override
+    public int ordersQuantity() {
+        return 0;
+    }
 }
