@@ -13,6 +13,7 @@ public class Restaurant extends JFrame{
     private JPanel mainPanel;
     private JScrollPane scrlTableOrders;
     private JScrollPane scrlInternetOrders;
+    private JTabbedPane tabbedPane1;
 
     Restaurant(){
         tableOrdersManager = new TableOrdersManager();
@@ -39,6 +40,19 @@ public class Restaurant extends JFrame{
                 dialog.pack();
                 dialog.setVisible(true);
 
+            }
+        });
+        tableNumberButton.addActionListener(new ActionListener() {
+            /**
+             * Invoked when an action occurs.
+             *
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TableOrder order =new TableOrder(1, 1);
+
+                //tableOrdersManager.addOrder(1, new TableOrder(1,1));
             }
         });
     }
