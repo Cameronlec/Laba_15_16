@@ -5,18 +5,18 @@ package restaurant;
 public class InternetOrder implements Order {
 
 
-    CircularDoublyLinkedList<Item> orderItems;
+    CircularDoublyLinkedList<MenuItem> orderItems;
     int itemsCount=0;
 
     InternetOrder()
     {
-        orderItems=new CircularDoublyLinkedList<Item>();
+        orderItems=new CircularDoublyLinkedList<MenuItem>();
         itemsCount=0;
     }
 
-    InternetOrder(Item[] itemsArray)
+    InternetOrder(MenuItem[] itemsArray)
     {
-        orderItems=new CircularDoublyLinkedList<Item>();
+        orderItems=new CircularDoublyLinkedList<MenuItem>();
         for(int i=0; i<itemsArray.length; i++)
         {
             orderItems.add(itemsArray[i]);
@@ -33,7 +33,7 @@ public class InternetOrder implements Order {
         if(orderItems.size()==0){
             return false;
         }
-        CircularDoublyLinkedList<Item>.Node<Item> lastNode = orderItems.getTail();
+        CircularDoublyLinkedList<MenuItem>.Node<MenuItem> lastNode = orderItems.getTail();
         while (lastNode.getData().getName()!=itemName){
             if (lastNode == orderItems.getHead()) {
 
@@ -47,6 +47,11 @@ public class InternetOrder implements Order {
             return true;
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean deleteItemByMenuItem(MenuItem item) {
         return false;
     }
 
@@ -64,13 +69,18 @@ public class InternetOrder implements Order {
         return deletedItemsCount;
     }
 
-/*
-−добавляющий позицию в заказ
-(принимает ссылку типа Item).
-Пока этот метод возвращает истину
-после выполнения операции добавления элемента.
-*/
-    public boolean addItem(Item newItem){
+    @Override
+    public int deleteAllItemsWithMenuItem(MenuItem item) {
+        return 0;
+    }
+
+    /*
+    −добавляющий позицию в заказ
+    (принимает ссылку типа Item).
+    Пока этот метод возвращает истину
+    после выполнения операции добавления элемента.
+    */
+    public boolean add(MenuItem newItem){
         orderItems.add(newItem);
 
         itemsCount++;
@@ -95,13 +105,13 @@ public class InternetOrder implements Order {
 −возвращающий массив заказанных блюд и напитков
 (значений null в массиве быть не должно).
  */
-    public Item[] getItemsArray(){
+    public MenuItem[] getItemsArray(){
         if(itemsCount==0){
             return null;
         }
-        Item[] items =new Item[itemsCount];
+        MenuItem[] items =new MenuItem[itemsCount];
 
-        CircularDoublyLinkedList<Item>.Node<Item> lastNode = orderItems.getHead();
+        CircularDoublyLinkedList<MenuItem>.Node<MenuItem> lastNode = orderItems.getHead();
         if (lastNode!=null){
             for(int i=0;i<itemsCount;i++) {
                 items[i] = lastNode.getData();
@@ -116,7 +126,7 @@ public class InternetOrder implements Order {
  */
     public double getOrderCost(){
         double cost=0.0;
-        CircularDoublyLinkedList<Item>.Node<Item> lastNode = orderItems.getHead();
+        CircularDoublyLinkedList<MenuItem>.Node<MenuItem> lastNode = orderItems.getHead();
         while (true){
             if(lastNode==null){
                 return 0.0;
@@ -131,15 +141,25 @@ public class InternetOrder implements Order {
         return cost;
     }
 
-/*
-−возвращающий массив названий заказанных блюд и напитков
-(без повторов).
- */
+    @Override
+    public Customer getCustomer() {
+        return null;
+    }
+
+    @Override
+    public void setCustomer(Customer customer) {
+
+    }
+
+    /*
+    −возвращающий массив названий заказанных блюд и напитков
+    (без повторов).
+     */
     public String[] getItemsNames() {
         if (itemsCount == 0) {
             return null;
         }
-        Item[] items = getItemsArray();
+        MenuItem[] items = getItemsArray();
         String[] tmpNames=new String[itemsCount];
         tmpNames[0]= items[0].getName();
         int uniqNamesCount=1;
@@ -176,7 +196,7 @@ public int getItemCountByName(String itemName){
     }
     int count=0;
 
-    CircularDoublyLinkedList<Item>.Node<Item> lastNode = orderItems.getHead();
+    CircularDoublyLinkedList<MenuItem>.Node<MenuItem> lastNode = orderItems.getHead();
     if (lastNode!=null){
         for(int i=0;i<itemsCount;i++) {
             if( lastNode.getData().getName().equals(itemName)){
@@ -188,20 +208,25 @@ public int getItemCountByName(String itemName){
     return count;
 }
 
-/*
-−возвращающий массив позиций заказа,
-отсортированный по убыванию цены.
- */
-     public Item[] getItemsArrayOrderedByCostDesc(){
+    @Override
+    public int getItemCountByMenuItem(MenuItem item) {
+        return 0;
+    }
+
+    /*
+    −возвращающий массив позиций заказа,
+    отсортированный по убыванию цены.
+     */
+     public MenuItem[] getItemsArrayOrderedByCostDesc(){
          if(itemsCount==0){
              return null;
          }
-         Item[] items =getItemsArray();
+         MenuItem[] items =getItemsArray();
          for(int i = itemsCount ; i > 0 ; i--){
              for(int j = 0 ; j < i ; j++){
 
                 if( items[j].getCost()> items[j+1].getCost() ){
-                    Item tmp = items[j];
+                    MenuItem tmp = items[j];
                     items[j] = items[j+1];
                     items[j+1] = tmp;
                 }

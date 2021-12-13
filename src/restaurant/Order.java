@@ -1,15 +1,19 @@
 package restaurant;
 
 public interface Order {
-    boolean addItem(Item addingItem);
-    boolean deleteItemByName(String removingItemName);
-    int deleteAllItemsWithName(String itemName);
-    int getItemsCount();
-    Item[] getItemsArray();
-    double getOrderCost();
-    int getItemCountByName(String itemName);
+    boolean add(MenuItem addingItem);
     String[] getItemsNames();
-    Item[] getItemsArrayOrderedByCostDesc();
-
+    int getItemsCount();
+    int getItemCountByName(String itemName);
+    int getItemCountByMenuItem(MenuItem item);
+    MenuItem[] getItemsArray();
+    boolean deleteItemByName(String removingItemName);
+    boolean deleteItemByMenuItem(MenuItem item);
+    int deleteAllItemsWithName(String itemName);
+    int deleteAllItemsWithMenuItem(MenuItem item);
+    MenuItem[] getItemsArrayOrderedByCostDesc();
+    double getOrderCost();
+    Customer getCustomer();
+    void setCustomer(Customer customer);
 
 }

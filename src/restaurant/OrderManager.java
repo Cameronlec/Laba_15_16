@@ -53,15 +53,15 @@ public class OrderManager
         internetOrders.remove(tableNumber);
     }
 
-    public void addItemToOrder(String address, Item item){
-        getOrder(address).addItem(item);
+    public void addItemToOrder(String address, MenuItem item){
+        getOrder(address).add(item);
     }
 
-    public void addItemToOrder(Integer tableNumber, Item item){
+    public void addItemToOrder(Integer tableNumber, MenuItem item){
         if(!restaurantOrders.containsKey(tableNumber)){
             throw new IllegalTableNumber("" + tableNumber, "Столика с таким номером не существует");
         }
-        getOrder(tableNumber).addItem(item);
+        getOrder(tableNumber).add(item);
     }
 
     public Order [] getOrdersArray(){

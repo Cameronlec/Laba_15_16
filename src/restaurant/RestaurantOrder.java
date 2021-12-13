@@ -11,25 +11,25 @@ public class RestaurantOrder implements Order
 
     private boolean isClosed;
 
-    private Item[] orderItemsArray;
+    private MenuItem[] orderItemsArray;
 
     RestaurantOrder(Integer orderNumber, Integer tableNumber)
     {
         this.orderNumber = orderNumber;
         this.tableNumber = tableNumber;
 
-        orderItemsArray=new Item[0];
+        orderItemsArray=new MenuItem[0];
         capacity = 5;
         size = 0;
     }
 
-    RestaurantOrder(Integer orderNumber, Integer tableNumber, Item[] items)
+    RestaurantOrder(Integer orderNumber, Integer tableNumber, MenuItem[] items)
     {
         this.orderNumber = orderNumber;
         this.tableNumber = tableNumber;
 
         int n = items.length;
-        orderItemsArray=new Item[n];
+        orderItemsArray=new MenuItem[n];
         for(int i=0; i<n; i++){
             orderItemsArray[i]= items[i];
         }
@@ -37,10 +37,10 @@ public class RestaurantOrder implements Order
         capacity =n+5;
     }
     @Override
-    public boolean addItem(Item addingItem) {
+    public boolean add(MenuItem addingItem) {
         if(size == capacity){
             capacity +=5;
-            Item[] resizedOrderItemsArray=new Item[capacity];
+            MenuItem[] resizedOrderItemsArray=new MenuItem[capacity];
             for(int i=0; i<size; i++){
                 resizedOrderItemsArray[i] = orderItemsArray[i];
             }
@@ -68,12 +68,22 @@ public class RestaurantOrder implements Order
     }
 
     @Override
+    public boolean deleteItemByMenuItem(MenuItem item) {
+        return false;
+    }
+
+    @Override
     public int deleteAllItemsWithName(String itemName) {
         int deletedItemsCount=0;
         while (deleteItemByName(itemName)){
             deletedItemsCount++;
         }
         return deletedItemsCount;
+    }
+
+    @Override
+    public int deleteAllItemsWithMenuItem(MenuItem item) {
+        return 0;
     }
 
 
@@ -110,8 +120,8 @@ public class RestaurantOrder implements Order
     //        return new Dish[0];
     //    }
     @Override
-    public Item[] getItemsArray() {
-        Item[] retArray = new Item[size];
+    public MenuItem[] getItemsArray() {
+        MenuItem[] retArray = new MenuItem[size];
         for(int i=0; i<size; i++){
             retArray[i] = orderItemsArray[i];
         }
@@ -131,6 +141,16 @@ public class RestaurantOrder implements Order
     }
 
     @Override
+    public Customer getCustomer() {
+        return null;
+    }
+
+    @Override
+    public void setCustomer(Customer customer) {
+
+    }
+
+    @Override
     public int getItemCountByName(String itemName) {
         int count=0;
         for(int i=size-1; i>0; i--) {
@@ -139,6 +159,11 @@ public class RestaurantOrder implements Order
             }
         }
         return count;
+    }
+
+    @Override
+    public int getItemCountByMenuItem(MenuItem item) {
+        return 0;
     }
 
     @Override
@@ -168,13 +193,13 @@ public class RestaurantOrder implements Order
     }
 
     @Override
-    public Item[] getItemsArrayOrderedByCostDesc() {
-        Item[] items =getItemsArray();
+    public MenuItem[] getItemsArrayOrderedByCostDesc() {
+        MenuItem[] items =getItemsArray();
         for(int i = size ; i > 0 ; i--){
             for(int j = 0 ; j < i ; j++){
 
                 if( items[j].getCost()> items[j+1].getCost() ){
-                    Item tmp = items[j];
+                    MenuItem tmp = items[j];
                     items[j] = items[j+1];
                     items[j+1] = tmp;
                 }
