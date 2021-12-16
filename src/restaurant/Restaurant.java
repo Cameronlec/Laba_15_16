@@ -130,11 +130,23 @@ public class Restaurant {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JButton btn = (JButton) e.getSource();
+
                 String text=btn.getText();
                 Integer tableNum =Integer.parseInt(text);
-                int orderNum= 1+ tableOrdersManager.ordersQuantity();
 
-                TableOrder order=new TableOrder(orderNum, tableNum);
+                TableOrder order;
+                int orderNum= 1+ tableOrdersManager.ordersQuantity();
+                boolean isNewOrder=false;
+                try {
+                    order = (TableOrder) tableOrdersManager.getOrder(tableNum);
+                }catch (IllegalTableNumber ex){
+                    System.out.println(ex.getMessage());
+                    order=new TableOrder(orderNum, tableNum);
+                    isNewOrder=true;
+                    Color bkc= btn.getBackground();
+
+                }
+                btn.setBackground(Color.BLUE);
 
                 drinksPanel = new JPanel();
                 dishesPanel = new JPanel();
@@ -160,6 +172,14 @@ public class Restaurant {
                 }
 
                 orderItemsPanel.add(orderTotalLable);
+                if(order.getItemsCount()>0) {
+                    MenuItem[] itemsList = order.getItemsArray();
+                    for (int i = 0; i < itemsList.length; i++) {
+                        orderItemsPanel.add(new orderItemButton(itemsList[i], order, orderTotalLable), i);
+
+                    }
+                    orderTotalLable.setText("Order total: " + order.getOrderCost());
+                }
 
                 drinksScrollPanel =new JScrollPane(drinksPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
                 Insets ins = new Insets(2, 2, 2, 2);
@@ -177,28 +197,74 @@ public class Restaurant {
                 mainPanel.add(orderItemsScrollPanel, gbcOrderList);
 
                 JButton orderCloseButton=new JButton("Close"    );
+                JButton orderPaymentButton=new JButton("Pay&Close"    );
+
+                TableOrder finalOrder = order;
                 orderCloseButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        try {
-                            tableOrdersManager.addOrder(tableNum, order);
-                        } catch (OrderAlreadyAddedException ex) {
-                            ex.printStackTrace();
+                        JButton btnClose = (JButton) e.getSource();
+                        if( finalOrder.getItemsCount()>0) {
+                            try {
+                                tableOrdersManager.addOrder(tableNum, finalOrder);
+
+                            } catch (OrderAlreadyAddedException ex) {
+                                ex.printStackTrace();
+                            }
+                            btn.setBackground(Color.GREEN);
+                        }else{
+                            try {
+                                tableOrdersManager.removeOrder(tableNum);
+                            }
+                            catch (IllegalTableNumber ex){
+                                ex.printStackTrace();
+//                                btn.setBackground(Color.WHITE);
+                                btn.setBackground(new Color(238, 238, 238));
+                            }
                         }
                         mainPanel.remove(drinksScrollPanel);
                         mainPanel.remove(dishesScrollPanel);
                         mainPanel.remove(orderItemsScrollPanel);
                         mainPanel.remove(orderCloseButton);
+                        mainPanel.remove(orderPaymentButton);
                         mainPanel.setVisible(false);
                         mainPanel.setVisible(true);
                     }
                 });
                  ins = new Insets(2, 2, 2, 2);
-                 gbc = new GridBagConstraints(0, 4, 3, 1, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
+                 gbc = new GridBagConstraints(0, 4, 2, 1, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
 
                 mainPanel.add(orderCloseButton, gbc);
+
+                orderPaymentButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        JButton btnPay = (JButton) e.getSource();
+
+                        try {
+                            tableOrdersManager.removeOrder(tableNum);
+                            btn.setBackground(new Color(238, 238, 238));
+                        }
+                        catch (IllegalTableNumber ex){
+                            ex.printStackTrace();
+//                                btn.setBackground(Color.WHITE);
+                            btn.setBackground(new Color(238, 238, 238));
+                        }
+
+                        mainPanel.remove(drinksScrollPanel);
+                        mainPanel.remove(dishesScrollPanel);
+                        mainPanel.remove(orderItemsScrollPanel);
+                        mainPanel.remove(orderCloseButton);
+                        mainPanel.remove(orderPaymentButton);
+                        mainPanel.setVisible(false);
+                        mainPanel.setVisible(true);
+                    }
+                });
+                ins = new Insets(2, 2, 2, 2);
+                gbc = new GridBagConstraints(2, 4, 1, 1, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
+
+                mainPanel.add(orderPaymentButton, gbc);
+
                 mainPanel.setVisible(false);
                 mainPanel.setVisible(true);
-
             }
         };
         a1Button.addActionListener(tablePressAction);

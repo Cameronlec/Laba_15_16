@@ -53,7 +53,7 @@ public class TableOrdersManager implements OrdersManager
         if(!restaurantOrders.containsKey(tableNumber)){
             throw new IllegalTableNumber("" + tableNumber, "Столика с таким номером не существует");
         }
-        internetOrders.remove(tableNumber);
+        restaurantOrders.remove(tableNumber);
     }
 
     public void addItemToOrder(String address, MenuItem item){
