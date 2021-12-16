@@ -6,16 +6,44 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Restaurant {
+    static class MenuItemButton extends JButton {
+        private MenuItem menuItem;
+    }
 
+    Dish[] dishes= new Dish[]{
+            new Dish(150, "Суп-пюре", "Суп-пюре морковно-тыквенный"),
+            new Dish(90, "Котлета", "Котлета из телятины"),
+            new Dish(70, "Салат", "Салат из помидоров и огурцов"),
+            new Dish(210, "Плов", "Плов из баранины")
+    };
+    Drink[] drinks=new Drink[]{
+            new Drink("Кофе", "Кофе растворимый", 50, 0.0, DrinkTypeEnum.COFFEE),
+            new Drink("Вино белое", "Вино белое столовое", 150, 8.5, DrinkTypeEnum.WINE),
+            new Drink("Чай зеленый", "Чай зеленый пакетик", 49, 0.0, DrinkTypeEnum.GREEN_TEA)
+
+    };
+    private  JPanel mainPanel;
+    private JPanel drinksPanel;
+    private  JButton[] Zal_1_TabelsButtons;
+    private JScrollPane tablesListPanel;
+    private JButton a1Button;
+    private JPanel content;
+    private JButton a2Button;
+    private JButton a3Button;
+    private JButton a4Button;
+    private JButton a5Button;
+    private JButton a6Button;
+    private JButton a7Button;
+    private JButton a8Button;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Restaurant");
         frame.setContentPane(new Restaurant().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+        frame.setSize(900, 600);
 //        frame.add(new JButton("sdbhsb"));
-//        frame.getRootPane().add(new JButton("sdbhsb"));
-//        frame.getContentPane().add(new JButton("sdbhsb"));
+        frame.getRootPane().add(new JButton("sdbhsb"));
+        frame.getContentPane().add(new JButton("sdbhsb"));
         frame.pack();
         frame.setVisible(true);
 
@@ -25,7 +53,8 @@ public class Restaurant {
     InternetOrdersManager internetOrdersManager;
     private JButton tableNumberButton;
     private JButton newInternetOrderButton;
-    private JPanel mainPanel;
+    // TODO: place custom component creation code here
+
     private JScrollPane scrlTableOrders;
     private JPanel Tables;
     private JPanel TablesOrdersListButtons;
@@ -95,23 +124,84 @@ public class Restaurant {
 //                //tableOrdersManager.addOrder(1, new TableOrder(1,1));
 //            }
 //        });
+
+        ActionListener tablePressAction =new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JButton btn = (JButton) e.getSource();
+                String text=btn.getText();
+                Integer num =Integer.parseInt(text);
+
+                TableOrder order=new TableOrder(0, num);
+
+
+                drinksPanel=new JPanel();
+
+                JPanel panel=new JPanel();
+                panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+//        int numberOfButtons=tableOrdersManager.getTablesQuantity();
+                int numberOfButtons=drinks.length;
+                MenuItemButton buttons[]=new MenuItemButton[numberOfButtons];
+                //Button[] buttons=new Button[15];
+                for(int i=0; i<numberOfButtons;i++) {
+                    MenuItemButton menuItemAddButton = new MenuItemButton() ;
+                    menuItemAddButton.setText(drinks[i].getName()+"\n"+drinks[i].getCost());
+                    menuItemAddButton.menuItem=drinks[i];
+
+                    menuItemAddButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            MenuItemButton btn = (MenuItemButton)e.getSource();
+
+                            order.add(btn.menuItem);
+                            //list1.add(btn);
+                        }
+                    });
+                    buttons[i] = menuItemAddButton;
+                    panel.add(buttons[i]);
+                }
+                //JScrollPane vScroll = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                JScrollPane tablesPanel=new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                Insets ins = new Insets(2, 2, 2, 2);
+                GridBagConstraints gbc = new GridBagConstraints(0, 2, 2, 2, 2, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
+                mainPanel.add(tablesPanel, gbc);
+                mainPanel.setVisible(true);
+
+            }
+        };
+        a1Button.addActionListener(tablePressAction);
+        a2Button.addActionListener(tablePressAction);
+        a3Button.addActionListener(tablePressAction);
+        a4Button.addActionListener(tablePressAction);
+        a5Button.addActionListener(tablePressAction);
+        a6Button.addActionListener(tablePressAction);
+        a7Button.addActionListener(tablePressAction);
+
     }
 
+//    private void createNewTableOrder(int tableNumber){
+//
+//    }
     private void createUIComponents() {
-        // TODO: place custom component creation code here
-        mainPanel =new JPanel();
+        mainPanel = new JPanel(new GridLayout(7, 9));
+
+        /*
         JPanel panel=new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 //        int numberOfButtons=tableOrdersManager.getTablesQuantity();
         int numberOfButtons=15;
         JButton buttons[]=new JButton[numberOfButtons];
         //Button[] buttons=new Button[15];
         for(int i=0; i<numberOfButtons;i++) {
-            buttons[i] = new JButton("Button" + i);
+            buttons[i] = new JButton("Table " + i);
             panel.add(buttons[i]);
         }
         //JScrollPane vScroll = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane tablesPanel=new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-        mainPanel.add(new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+        mainPanel.add(tablesPanel);
+
+         */
     }
 }
 

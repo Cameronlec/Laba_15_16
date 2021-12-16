@@ -16,8 +16,9 @@ public class TableOrder implements Order
         this.orderNumber = orderNumber;
         this.tableNumber = tableNumber;
 
-        orderItemsArray=new MenuItem[0];
+
         capacity = 5;
+        orderItemsArray=new MenuItem[capacity];
         size = 0;
     }
 
