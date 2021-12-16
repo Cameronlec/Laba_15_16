@@ -68,6 +68,15 @@ public class TableOrder implements Order
 
     @Override
     public boolean deleteItemByMenuItem(MenuItem item) {
+        for(int i=size-1; i>=0; i--){
+            if( orderItemsArray[i].equals(item)){
+                for(int j=i; j<size-1; j++){
+                    orderItemsArray[j]=orderItemsArray[j+1];
+                }
+                size--;
+                return true;
+            }
+        }
         return false;
     }
 
