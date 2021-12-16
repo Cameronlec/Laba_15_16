@@ -114,6 +114,7 @@ public class TableOrdersManager implements OrdersManager
 
     @Override
     public int ordersQuantity() {
-        return 0;
+        return restaurantOrders.size();
+//        return 0;
     }
 }

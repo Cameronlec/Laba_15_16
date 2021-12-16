@@ -8,6 +8,57 @@ import java.awt.event.ActionListener;
 public class Restaurant {
     static class MenuItemButton extends JButton {
         private MenuItem menuItem;
+        public MenuItemButton(MenuItem menuItem, Order order, JPanel orderListPanel, JLabel orderTotalLable){
+            this.menuItem=menuItem;
+
+            setText(menuItem.getName()+"\n"+menuItem.getCost());
+            addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    MenuItemButton btn = (MenuItemButton)e.getSource();
+                    order.add(btn.menuItem);
+
+                    orderListPanel.add(new orderItemButton(btn.menuItem, order, orderTotalLable), orderListPanel.getComponentCount()-1 );
+                    orderTotalLable.setText("Order total: "+order.getOrderCost());
+
+                    orderListPanel.getRootPane().setVisible(false);
+                    orderListPanel.getRootPane().setVisible(true);
+//                    orderListPanel.getParent().setVisible(false);
+//                    orderListPanel.getParent().setVisible(true);
+
+//                    MenuItem[]items=order.getItemsArray();
+//                    for (int i=0; i< items.length;i++)
+//                         {
+//                        System.out.println(items[i].getName());
+//                    }
+
+                }
+            });
+
+        }
+    }
+
+    static class orderItemButton extends JButton {
+        private MenuItem menuItem;
+        public orderItemButton(MenuItem menuItem, Order order, JLabel orderTotalLable) {
+            this.menuItem = menuItem;
+            setText(menuItem.getName()+"\n"+menuItem.getCost());
+            setOpaque(true);
+            setBackground(Color.WHITE);
+
+            addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    orderItemButton btn = (orderItemButton)e.getSource();
+                    order.deleteItemByMenuItem(btn.menuItem);
+                    Container parent=btn.getParent();
+                    parent.remove(btn);
+                    orderTotalLable.setText("Order total: "+order.getOrderCost());
+                    parent.setVisible(false);
+                    parent.setVisible(true);
+
+                }
+            });
+        }
+
     }
 
     Dish[] dishes= new Dish[]{
@@ -23,11 +74,19 @@ public class Restaurant {
 
     };
     private  JPanel mainPanel;
+    private JScrollPane drinksScrollPanel;
+    private JScrollPane dishesScrollPanel;
+    private JScrollPane orderItemsScrollPanel;
+
     private JPanel drinksPanel;
-    private  JButton[] Zal_1_TabelsButtons;
+    private JPanel dishesPanel;
+    private JPanel orderItemsPanel;
+    private JLabel orderTotalLable;
+    private JButton[] Zal_1_TabelsButtons;
     private JScrollPane tablesListPanel;
-    private JButton a1Button;
     private JPanel content;
+
+    private JButton a1Button;
     private JButton a2Button;
     private JButton a3Button;
     private JButton a4Button;
@@ -40,11 +99,11 @@ public class Restaurant {
         JFrame frame = new JFrame("Restaurant");
         frame.setContentPane(new Restaurant().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(900, 600);
+        frame.setSize(800, 600);
 //        frame.add(new JButton("sdbhsb"));
-        frame.getRootPane().add(new JButton("sdbhsb"));
-        frame.getContentPane().add(new JButton("sdbhsb"));
-        frame.pack();
+//        frame.getRootPane().add(new JButton("sdbhsb"));
+//        frame.getContentPane().add(new JButton("sdbhsb"));
+//        frame.pack();
         frame.setVisible(true);
 
     }
@@ -67,104 +126,77 @@ public class Restaurant {
         tableOrdersManager = new TableOrdersManager();
         internetOrdersManager = new InternetOrdersManager();
 
-//        setContentPane(mainPanel);
-//        setSize(800, 600);
-//        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        setVisible(true);
-//        JPanel panel=new JPanel();
-//        int numberOfButtons=tableOrdersManager.getTablesQuantity();
-//        JButton buttons[]=new JButton[numberOfButtons];
-//        //Button[] buttons=new Button[15];
-//        for(int i=0; i<numberOfButtons;i++){
-//            buttons[i]=new JButton("Button"+i);
-//            mainPanel.add(buttons[i]);
-//            scrlTableOrders.add(new Button("eee №"+i), i);
-
-//            Tables.add(new Button(""+i), i);
-//            mainPanel.add(new Button("bbb №"+i), i);
-//            MainView.add(new Button("aaa №"+i), i);
-//            TablesOrdersListButtons.add(new Button("ccc №"+i), i);
-
-            /*
-            buttons[i]=new Button(""+i);
-            buttons[i].setVisible(true);
-            buttons[i].setSize(30, 30);
-            buttons[i].setBounds(0, i*30, 30, 30);
-            Tables.add(buttons[i], i);
-*/
-//        }
-        //mainPanel.add(new JScrollPane(panel));
-
-//        newInternetOrderButton.addActionListener(new ActionListener() {
-//            /**
-//             * Invoked when an action occurs.
-//             *
-//             * @param e the event to be processed
-//             */
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                internetOrdersManager.add(new InternetOrder());
-//                newOrder dialog = new newOrder();
-//                dialog.pack();
-//                dialog.setVisible(true);
-//
-//            }
-//        });
-
-//        tableNumberButton.addActionListener(new ActionListener() {
-//            /**
-//             * Invoked when an action occurs.
-//             *
-//             * @param e the event to be processed
-//             */
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                TableOrder order =new TableOrder(1, 1);
-//
-//                //tableOrdersManager.addOrder(1, new TableOrder(1,1));
-//            }
-//        });
-
         ActionListener tablePressAction =new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 JButton btn = (JButton) e.getSource();
                 String text=btn.getText();
-                Integer num =Integer.parseInt(text);
+                Integer tableNum =Integer.parseInt(text);
+                int orderNum= 1+ tableOrdersManager.ordersQuantity();
 
-                TableOrder order=new TableOrder(0, num);
+                TableOrder order=new TableOrder(orderNum, tableNum);
 
+                drinksPanel = new JPanel();
+                dishesPanel = new JPanel();
+                orderItemsPanel=new JPanel();
 
-                drinksPanel=new JPanel();
+                drinksPanel.setLayout(new BoxLayout(drinksPanel, BoxLayout.PAGE_AXIS));
+                dishesPanel.setLayout(new BoxLayout(dishesPanel, BoxLayout.PAGE_AXIS));
+                orderItemsPanel.setLayout(new BoxLayout(orderItemsPanel, BoxLayout.PAGE_AXIS));
+                orderTotalLable=new JLabel("Total: ");
 
-                JPanel panel=new JPanel();
-                panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-//        int numberOfButtons=tableOrdersManager.getTablesQuantity();
                 int numberOfButtons=drinks.length;
-                MenuItemButton buttons[]=new MenuItemButton[numberOfButtons];
-                //Button[] buttons=new Button[15];
+                MenuItemButton buttonsDrinks[]=new MenuItemButton[numberOfButtons];
                 for(int i=0; i<numberOfButtons;i++) {
-                    MenuItemButton menuItemAddButton = new MenuItemButton() ;
-                    menuItemAddButton.setText(drinks[i].getName()+"\n"+drinks[i].getCost());
-                    menuItemAddButton.menuItem=drinks[i];
-
-                    menuItemAddButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            MenuItemButton btn = (MenuItemButton)e.getSource();
-
-                            order.add(btn.menuItem);
-                            //list1.add(btn);
-                        }
-                    });
-                    buttons[i] = menuItemAddButton;
-                    panel.add(buttons[i]);
+                    buttonsDrinks[i] = new MenuItemButton(drinks[i], order, orderItemsPanel, orderTotalLable) ;
+                    drinksPanel.add(buttonsDrinks[i]);
                 }
-                //JScrollPane vScroll = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-                JScrollPane tablesPanel=new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+                numberOfButtons=dishes.length;
+                MenuItemButton buttonsDishes[]=new MenuItemButton[numberOfButtons];
+                for(int i=0; i<numberOfButtons;i++) {
+                    buttonsDishes[i] = new MenuItemButton(dishes[i], order, orderItemsPanel, orderTotalLable) ;
+                    dishesPanel.add(buttonsDishes[i]);
+                }
+
+                orderItemsPanel.add(orderTotalLable);
+
+                drinksScrollPanel =new JScrollPane(drinksPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
                 Insets ins = new Insets(2, 2, 2, 2);
-                GridBagConstraints gbc = new GridBagConstraints(0, 2, 2, 2, 2, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
-                mainPanel.add(tablesPanel, gbc);
+                GridBagConstraints gbc = new GridBagConstraints(0, 2, 1, 2, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
+                mainPanel.add(drinksScrollPanel, gbc);
+
+                dishesScrollPanel =new JScrollPane(dishesPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                Insets insDish = new Insets(2, 2, 2, 2);
+                GridBagConstraints gbcDish = new GridBagConstraints(1, 2, 1, 2, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, insDish, 2, 2);
+                mainPanel.add(dishesScrollPanel, gbcDish);
+
+                orderItemsScrollPanel= new JScrollPane(orderItemsPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                Insets insOrderList = new Insets(2, 2, 2, 2);
+                GridBagConstraints gbcOrderList = new GridBagConstraints(2, 2, 1, 2, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, insDish, 2, 2);
+                mainPanel.add(orderItemsScrollPanel, gbcOrderList);
+
+                JButton orderCloseButton=new JButton("Close"    );
+                orderCloseButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            tableOrdersManager.addOrder(tableNum, order);
+                        } catch (OrderAlreadyAddedException ex) {
+                            ex.printStackTrace();
+                        }
+                        mainPanel.remove(drinksScrollPanel);
+                        mainPanel.remove(dishesScrollPanel);
+                        mainPanel.remove(orderItemsScrollPanel);
+                        mainPanel.remove(orderCloseButton);
+                        mainPanel.setVisible(false);
+                        mainPanel.setVisible(true);
+                    }
+                });
+                 ins = new Insets(2, 2, 2, 2);
+                 gbc = new GridBagConstraints(0, 4, 3, 1, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
+
+                mainPanel.add(orderCloseButton, gbc);
+                mainPanel.setVisible(false);
                 mainPanel.setVisible(true);
 
             }
@@ -176,32 +208,16 @@ public class Restaurant {
         a5Button.addActionListener(tablePressAction);
         a6Button.addActionListener(tablePressAction);
         a7Button.addActionListener(tablePressAction);
-
+        a8Button.addActionListener(tablePressAction);
     }
 
-//    private void createNewTableOrder(int tableNumber){
-//
-//    }
     private void createUIComponents() {
         mainPanel = new JPanel(new GridLayout(7, 9));
 
-        /*
-        JPanel panel=new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-//        int numberOfButtons=tableOrdersManager.getTablesQuantity();
-        int numberOfButtons=15;
-        JButton buttons[]=new JButton[numberOfButtons];
-        //Button[] buttons=new Button[15];
-        for(int i=0; i<numberOfButtons;i++) {
-            buttons[i] = new JButton("Table " + i);
-            panel.add(buttons[i]);
-        }
-        //JScrollPane vScroll = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        JScrollPane tablesPanel=new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        mainPanel.setSize( 800, 600);
+        mainPanel.setVisible(false);
+        mainPanel.setVisible(true);
 
-        mainPanel.add(tablesPanel);
-
-         */
     }
 }
 

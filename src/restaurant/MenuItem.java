@@ -17,4 +17,7 @@ public class MenuItem {
     public int getCost() {
         return cost;
     }
+    public String toString(){
+        return name+" \t "+cost;
+    }
 }
