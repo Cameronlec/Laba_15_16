@@ -11,7 +11,7 @@ public class Restaurant {
         public MenuItemButton(MenuItem menuItem, Order order, JPanel orderListPanel, JLabel orderTotalLable){
             this.menuItem=menuItem;
 
-            setText(menuItem.getName()+"\n"+menuItem.getCost());
+            setText(menuItem.getName()+" - "+menuItem.getCost());
             addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     MenuItemButton btn = (MenuItemButton)e.getSource();
@@ -41,7 +41,7 @@ public class Restaurant {
         private MenuItem menuItem;
         public orderItemButton(MenuItem menuItem, Order order, JLabel orderTotalLable) {
             this.menuItem = menuItem;
-            setText(menuItem.getName()+"\n"+menuItem.getCost());
+            setText(menuItem.getName()+" - "+menuItem.getCost());
             setOpaque(true);
             setBackground(Color.WHITE);
 
@@ -112,6 +112,17 @@ public class Restaurant {
     InternetOrdersManager internetOrdersManager;
     private JButton tableNumberButton;
     private JButton newInternetOrderButton;
+    private JTextField firstName;
+    private JTextField secondName;
+    private JTextField age;
+    private JTextField cityName;
+    private JTextField zipCode;
+    private JTextField streetName;
+    private JTextField buildingNumber;
+    private JTextField buildingLetter;
+    private JTextField apartmentNumber;
+    private JPanel customerPanel;
+    private JButton goToOrder;
     // TODO: place custom component creation code here
 
     private JScrollPane scrlTableOrders;
@@ -183,17 +194,17 @@ public class Restaurant {
 
                 drinksScrollPanel =new JScrollPane(drinksPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
                 Insets ins = new Insets(2, 2, 2, 2);
-                GridBagConstraints gbc = new GridBagConstraints(0, 2, 1, 2, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
+                GridBagConstraints gbc = new GridBagConstraints(0, 4, 1, 2, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
                 mainPanel.add(drinksScrollPanel, gbc);
 
                 dishesScrollPanel =new JScrollPane(dishesPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
                 Insets insDish = new Insets(2, 2, 2, 2);
-                GridBagConstraints gbcDish = new GridBagConstraints(1, 2, 1, 2, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, insDish, 2, 2);
+                GridBagConstraints gbcDish = new GridBagConstraints(1, 4, 1, 2, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, insDish, 2, 2);
                 mainPanel.add(dishesScrollPanel, gbcDish);
 
                 orderItemsScrollPanel= new JScrollPane(orderItemsPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
                 Insets insOrderList = new Insets(2, 2, 2, 2);
-                GridBagConstraints gbcOrderList = new GridBagConstraints(2, 2, 1, 2, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, insDish, 2, 2);
+                GridBagConstraints gbcOrderList = new GridBagConstraints(2, 4, 1, 2, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, insDish, 2, 2);
                 mainPanel.add(orderItemsScrollPanel, gbcOrderList);
 
                 JButton orderCloseButton=new JButton("Close"    );
@@ -231,7 +242,7 @@ public class Restaurant {
                     }
                 });
                  ins = new Insets(2, 2, 2, 2);
-                 gbc = new GridBagConstraints(0, 4, 2, 1, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
+                 gbc = new GridBagConstraints(0, 6, 2, 1, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
 
                 mainPanel.add(orderCloseButton, gbc);
 
@@ -259,12 +270,37 @@ public class Restaurant {
                     }
                 });
                 ins = new Insets(2, 2, 2, 2);
-                gbc = new GridBagConstraints(2, 4, 1, 1, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
+                gbc = new GridBagConstraints(2, 6, 1, 1, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
 
                 mainPanel.add(orderPaymentButton, gbc);
 
                 mainPanel.setVisible(false);
                 mainPanel.setVisible(true);
+            }
+        };
+        ActionListener internetOrderPressAction =new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //JButton btn = (JButton) e.getSource();
+                //btn.setBackground(Color.BLUE);
+
+//                String text=btn.getText();
+//                Integer tableNum =Integer.parseInt(text);
+
+                firstName.setText("Фамилия");
+                secondName.setText("Имя");
+                age.setText("34");
+                cityName.setText("Город");
+                zipCode.setText("123456");
+                        streetName.getText(),
+                        Integer.parseInt( buildingNumber.getText()),
+                        buildingLetter.getText().charAt(0),
+                        Integer.parseInt( apartmentNumber.getText())
+                customerPanel.setVisible(true);
+
+/*перенесено в кнопку [К заказу]*/
+
+                /*перенесено в кнопку [К заказу]*/
             }
         };
         a1Button.addActionListener(tablePressAction);
@@ -275,10 +311,97 @@ public class Restaurant {
         a6Button.addActionListener(tablePressAction);
         a7Button.addActionListener(tablePressAction);
         a8Button.addActionListener(tablePressAction);
+        newInternetOrderButton.addActionListener(internetOrderPressAction);
+        goToOrder.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                InternetOrder internetOrder = new InternetOrder( firstName.getText(),
+                        secondName.getText(),
+                        Integer.parseInt(   age.getText()),
+                        cityName.getText(),
+                        Integer.parseInt( zipCode.getText()),
+                        streetName.getText(),
+                        Integer.parseInt( buildingNumber.getText()),
+                        buildingLetter.getText().charAt(0),
+                        Integer.parseInt( apartmentNumber.getText())
+                );
+
+
+                drinksPanel = new JPanel();
+                dishesPanel = new JPanel();
+                orderItemsPanel=new JPanel();
+
+                drinksPanel.setLayout(new BoxLayout(drinksPanel, BoxLayout.PAGE_AXIS));
+                dishesPanel.setLayout(new BoxLayout(dishesPanel, BoxLayout.PAGE_AXIS));
+                orderItemsPanel.setLayout(new BoxLayout(orderItemsPanel, BoxLayout.PAGE_AXIS));
+                orderTotalLable=new JLabel("Total: ");
+
+                int numberOfButtons=drinks.length;
+                MenuItemButton buttonsDrinks[]=new MenuItemButton[numberOfButtons];
+                for(int i=0; i<numberOfButtons;i++) {
+                    buttonsDrinks[i] = new MenuItemButton(drinks[i], internetOrder, orderItemsPanel, orderTotalLable) ;
+                    drinksPanel.add(buttonsDrinks[i]);
+                }
+
+                numberOfButtons=dishes.length;
+                MenuItemButton buttonsDishes[]=new MenuItemButton[numberOfButtons];
+                for(int i=0; i<numberOfButtons;i++) {
+                    buttonsDishes[i] = new MenuItemButton(dishes[i], internetOrder, orderItemsPanel, orderTotalLable) ;
+                    dishesPanel.add(buttonsDishes[i]);
+                }
+
+                orderItemsPanel.add(orderTotalLable);
+
+                drinksScrollPanel =new JScrollPane(drinksPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                Insets ins = new Insets(2, 2, 2, 2);
+                GridBagConstraints gbc = new GridBagConstraints(0, 4, 1, 2, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
+                mainPanel.add(drinksScrollPanel, gbc);
+
+                dishesScrollPanel =new JScrollPane(dishesPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                Insets insDish = new Insets(2, 2, 2, 2);
+                GridBagConstraints gbcDish = new GridBagConstraints(1, 4, 1, 2, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, insDish, 2, 2);
+                mainPanel.add(dishesScrollPanel, gbcDish);
+
+                orderItemsScrollPanel= new JScrollPane(orderItemsPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                Insets insOrderList = new Insets(2, 2, 2, 2);
+                GridBagConstraints gbcOrderList = new GridBagConstraints(2, 4, 1, 2, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, insDish, 2, 2);
+                mainPanel.add(orderItemsScrollPanel, gbcOrderList);
+
+//                JButton orderCloseButton=new JButton("Close"    );
+                JButton orderPaymentButton=new JButton("Pay&Close"    );
+
+
+                orderPaymentButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        customerPanel.setVisible(false);
+                        JButton btnPay = (JButton) e.getSource();
+                        internetOrdersManager.add(internetOrder);
+                        //btn.setBackground(new Color(238, 238, 238));
+
+
+                        mainPanel.remove(drinksScrollPanel);
+                        mainPanel.remove(dishesScrollPanel);
+                        mainPanel.remove(orderItemsScrollPanel);
+
+                        mainPanel.remove(orderPaymentButton);
+                        mainPanel.setVisible(false);
+                        mainPanel.setVisible(true);
+                    }
+                });
+                ins = new Insets(2, 2, 2, 2);
+                gbc = new GridBagConstraints(2, 7, 1, 1, 1, 0.9, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, ins, 2, 2);
+
+                mainPanel.add(orderPaymentButton, gbc);
+
+                mainPanel.setVisible(false);
+                mainPanel.setVisible(true);
+            }
+        });
     }
 
     private void createUIComponents() {
-        mainPanel = new JPanel(new GridLayout(7, 9));
+        mainPanel = new JPanel(new GridLayout(8, 8));
 
         mainPanel.setSize( 800, 600);
         mainPanel.setVisible(false);

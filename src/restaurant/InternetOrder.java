@@ -7,11 +7,35 @@ public class InternetOrder implements Order {
 
     CircularDoublyLinkedList<MenuItem> orderItems;
     int itemsCount=0;
+    Customer customer;
 
     InternetOrder()
     {
+
         orderItems=new CircularDoublyLinkedList<MenuItem>();
         itemsCount=0;
+    }
+    InternetOrder(String firstName,
+                  String secondName,
+                  int age,
+                  String cityName,
+                  int zipCode,
+                  String streetName,
+                  int buildingNumber,
+                  char buildingLetter,
+                  int apartmentNumber){
+        orderItems=new CircularDoublyLinkedList<MenuItem>();
+        itemsCount=0;
+        customer=new Customer(firstName,
+                 secondName,
+         age,
+         cityName,
+         zipCode,
+         streetName,
+         buildingNumber,
+         buildingLetter,
+         apartmentNumber);
+
     }
 
     InternetOrder(MenuItem[] itemsArray)
@@ -129,7 +153,7 @@ public class InternetOrder implements Order {
         CircularDoublyLinkedList<MenuItem>.Node<MenuItem> lastNode = orderItems.getHead();
         while (true){
             if(lastNode==null){
-                return 0.0;
+                return cost;
             }
             cost+=lastNode.getData().getCost();
             lastNode=lastNode.getNextNode();
@@ -148,6 +172,7 @@ public class InternetOrder implements Order {
 
     @Override
     public void setCustomer(Customer customer) {
+
 
     }
 
